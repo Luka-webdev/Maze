@@ -8,6 +8,19 @@ const ballParameters = {
     positionY: 0,
     size: 50
 }
+const areaGame = {
+    width: 1100,
+    height: 550
+}
+
+const drawAreaGame = function () {
+    canvas.width = areaGame.width;
+    canvas.height = areaGame.height;
+    ctx.fillStyle = '#2f3640';
+    ctx.fillRect(0, 0, areaGame.width, areaGame.height);
+}
+drawAreaGame();
+
 
 
 
