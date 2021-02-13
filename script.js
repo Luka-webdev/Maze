@@ -1,32 +1,55 @@
+import {
+    tracks
+}
+from './tracks.js';
+
 const ball = document.querySelector('.ball');
+const areaGame = document.querySelector('.areaGame');
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 let flag = false;
 
+
+
 const ballParameters = {
-    positionX: 0,
-    positionY: 0,
-    size: 50
+    size: 50,
+    startPositionX: parseInt(getComputedStyle(areaGame).marginLeft),
+    startPositionY: tracks[0].startPoint2.y - tracks[0].startPoint1.y - 25 + parseInt(getComputedStyle(areaGame).marginTop),
 }
-const areaGame = {
+const areaGameParameters = {
     width: 1100,
     height: 550
 }
 
 const drawAreaGame = function () {
-    canvas.width = areaGame.width;
-    canvas.height = areaGame.height;
+    canvas.width = areaGameParameters.width;
+    canvas.height = areaGameParameters.height;
     ctx.fillStyle = '#2f3640';
-    ctx.fillRect(0, 0, areaGame.width, areaGame.height);
+    ctx.fillRect(0, 0, areaGameParameters.width, areaGameParameters.height);
 }
 drawAreaGame();
 
+const drawMaze = function () {
+    const track = tracks[0];
+    ctx.beginPath();
+    ctx.moveTo(track.startPoint1.x, track.startPoint1.y);
+    for (let i = 0; i < track.lines1.length; i++) {
+        ctx.lineTo(track.lines1[i].x, track.lines1[i].y);
+    }
+    ctx.moveTo(track.startPoint2.x, track.startPoint2.y);
+    for (let i = 0; i < track.lines2.length; i++) {
+        ctx.lineTo(track.lines2[i].x, track.lines2[i].y);
+    }
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = "red";
+    ctx.stroke();
+}
 
-
+drawMaze();
 
 const drawBall = function (e) {
-    ball.style.top = ballParameters.positionY + "px";
-    ball.style.left = ballParameters.positionX + "px";
+    ball.style.top = ballParameters.startPositionY + "px";
+    ball.style.left = ballParameters.startPositionX + "px";
 }
 drawBall();
 
@@ -38,10 +61,10 @@ ball.addEventListener('mouseup', function (e) {
 })
 const move = function (e) {
     if (flag) {
-        ballParameters.positionX = e.clientX - ballParameters.size / 2;
-        ballParameters.positionY = e.clientY - ballParameters.size / 2;
+        ballParameters.startPositionX = e.clientX - ballParameters.size / 2;
+        ballParameters.startPositionY = e.clientY - ballParameters.size / 2;
         drawBall()
     }
 }
 
-ball.addEventListener('mousemove', move)
+areaGame.addEventListener('mousemove', move);
